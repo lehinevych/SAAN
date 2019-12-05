@@ -7,10 +7,7 @@ Particularly, we employ [Transformer](https://github.com/tensorflow/tensor2tenso
 
 ## Contents
   * [Contents](#contents)
-  * [Walkthrough](#walkthrough)
-  * [Benchmarks](#benchmarks)
-    * [Evaluation results](#evaluation-results)
-  * [Detailed instructions](#detailed-instructions)
+   * [Detailed instructions](#detailed-instructions)
     * [Environment preparation](#environment-preparation)
     * [Download and preprocess datasets](#download-and-preprocess-datasets)
     * [Model training and evaluation](#model-training-and-evaluation)
@@ -23,111 +20,19 @@ Particularly, we employ [Transformer](https://github.com/tensorflow/tensor2tenso
     * [Test dataset](#test-dataset)
   * [Term definitions](#term-definitions)
 
-## Walkthrough
-
-Below are the commands for running the Transformer model. See the
-[Detailed instructions](#detailed-instructions) for more details on running the
-model.
-
-```
-cd /path/to/models/official/transformer
-
-# Ensure that PYTHONPATH is correctly defined as described in
-# https://github.com/tensorflow/models/tree/master/official#requirements
-# export PYTHONPATH="$PYTHONPATH:/path/to/models"
-
-# Export variables
-PARAM_SET=big
-DATA_DIR=$HOME/transformer/data
-MODEL_DIR=$HOME/transformer/model_$PARAM_SET
-VOCAB_FILE=$DATA_DIR/vocab.ende.32768
-
-# Download training/evaluation/test datasets
-python data_download.py --data_dir=$DATA_DIR
-
-# Train the model for 10 epochs, and evaluate after every epoch.
-python transformer_main.py --data_dir=$DATA_DIR --model_dir=$MODEL_DIR \
-    --vocab_file=$VOCAB_FILE --param_set=$PARAM_SET \
-    --bleu_source=$DATA_DIR/newstest2014.en --bleu_ref=$DATA_DIR/newstest2014.de
-
-# Run during training in a separate process to get continuous updates,
-# or after training is complete.
-tensorboard --logdir=$MODEL_DIR
-
-# Translate some text using the trained model
-python translate.py --model_dir=$MODEL_DIR --vocab_file=$VOCAB_FILE \
-    --param_set=$PARAM_SET --text="hello world"
-
-# Compute model's BLEU score using the newstest2014 dataset.
-python translate.py --model_dir=$MODEL_DIR --vocab_file=$VOCAB_FILE \
-    --param_set=$PARAM_SET --file=$DATA_DIR/newstest2014.en --file_out=translation.en
-python compute_bleu.py --translation=translation.en --reference=$DATA_DIR/newstest2014.de
-```
-
-## Benchmarks
-### Training times
-
-Currently, both big and base parameter sets run on a single GPU. The measurements below
-are reported from running the model on a P100 GPU.
-
-Param Set | batches/sec | batches per epoch | time per epoch
---- | --- | --- | ---
-base | 4.8 | 83244 | 4 hr
-big | 1.1 | 41365 | 10 hr
-
-### Evaluation results
-Below are the case-insensitive BLEU scores after 10 epochs.
-
-Param Set | Score
---- | --- |
-base | 27.7
-big | 28.9
-
 
 ## Detailed instructions
 
 
-0. ### Environment preparation
+1. ### Model training and evaluation
 
-   #### Add models repo to PYTHONPATH
-   Follow the instructions described in the [Requirements](https://github.com/tensorflow/models/tree/master/official#requirements) section to add the models folder to the python path.
+   There are two notebooks which demonstrate [single]('Single_identity_aggregation_and_attention_dist.ipynb') and 
+   [multi-identity]('Multi_identity_aggregation_model_for_repo.ipynb') aggregation models. The aggregation architecture is shared and could be found in [aggregator.py]('aggregator_utils/aggregator.py'). 
 
-   #### Export variables (optional)
 
-   Export the following variables, or modify the values in each of the snippets below:
-   ```
-   PARAM_SET=big
-   DATA_DIR=$HOME/transformer/data
-   MODEL_DIR=$HOME/transformer/model_$PARAM_SET
-   VOCAB_FILE=$DATA_DIR/vocab.ende.32768
-   ```
+   [config.py](aggregator_utils/config.py) specifies  the following configuration of the hyperparameteres:
 
-1. ### Download and preprocess datasets
 
-   [data_download.py](data_download.py) downloads and preprocesses the training and evaluation WMT datasets. After the data is downloaded and extracted, the training data is used to generate a vocabulary of subtokens. The evaluation and training strings are tokenized, and the resulting data is sharded, shuffled, and saved as TFRecords.
-
-   1.75GB of compressed data will be downloaded. In total, the raw files (compressed, extracted, and combined files) take up 8.4GB of disk space. The resulting TFRecord and vocabulary files are 722MB. The script takes around 40 minutes to run, with the bulk of the time spent downloading and ~15 minutes spent on preprocessing.
-
-   Command to run:
-   ```
-   python data_download.py --data_dir=$DATA_DIR
-   ```
-
-   Arguments:
-   * `--data_dir`: Path where the preprocessed TFRecord data, and vocab file will be saved.
-   * Use the `--help` or `-h` flag to get a full list of possible arguments.
-
-2. ### Model training and evaluation
-
-   [transformer_main.py](transformer_main.py) creates a Transformer model, and trains it using Tensorflow Estimator.
-
-   Command to run:
-   ```
-   python transformer_main.py --data_dir=$DATA_DIR --model_dir=$MODEL_DIR \
-       --vocab_file=$VOCAB_FILE --param_set=$PARAM_SET
-   ```
-
-   Arguments:
    * `--data_dir`: This should be set to the same directory given to the `data_download`'s `data_dir` argument.
    * `--model_dir`: Directory to save Transformer model training checkpoints.
    * `--vocab_file`: Path to subtoken vocabulary file. If data_download was used, you may find the file in `data_dir`.
