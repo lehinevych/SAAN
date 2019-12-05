@@ -26,8 +26,8 @@ Particularly, we employ [Transformer](https://github.com/tensorflow/tensor2tenso
 
 1. ### Model training and evaluation
 
-   There are two notebooks which demonstrate [single]('Single_identity_aggregation_and_attention_dist.ipynb') and 
-   [multi-identity]('Multi_identity_aggregation_model_for_repo.ipynb') aggregation models. The aggregation architecture is shared and could be found in [aggregator.py]('aggregator_utils/aggregator.py'). 
+   There are two notebooks which demonstrate [single](Single_identity_aggregation_and_attention_dist.ipynb) and 
+   [multi-identity](Multi_identity_aggregation_model_for_repo.ipynb) aggregation models. The aggregation architecture is shared and could be found in [aggregator.py](aggregator_utils/aggregator.py). 
 
 
    [config.py](aggregator_utils/config.py) specifies  the following configuration of the hyperparameteres:
