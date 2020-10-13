@@ -8,15 +8,7 @@ Particularly, we employ [Transformer](https://github.com/tensorflow/tensor2tenso
 ## Contents
   * [Contents](#contents)
    * [Detailed information](#detailed-information)
-   * [Model training and evaluation](#model-training-and-evaluation)
-  * [Export trained model](#export-trained-model)
-  * [Implementation overview](#implementation-overview)
-    * [Model Definition](#model-definition)
-    * [Model Estimator](#model-estimator)
-    * [Other scripts](#other-scripts)
-    * [Test dataset](#test-dataset)
-  * [Term definitions](#term-definitions)
-
+   * [Results on benchmarks](#model-training-and-evaluation)
 
 ## Detailed information
 
