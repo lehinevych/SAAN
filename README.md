@@ -1,6 +1,6 @@
 
 # SAAN
-This is an implementation of the Self-attention aggregation network as described in the [SAAN](https://arxiv.org/abs/1706.03762) paper. 
+This is an implementation of the Self-attention aggregation network as described in the [SAAN](https://arxiv.org/abs/2010.05340) paper. 
 
 SAAN is a neural network architecture that solves face template aggregation problems using self-attention mechanisms. 
 Particularly, we employ [Transformer](https://github.com/tensorflow/tensor2tensor) implementation for the sequence encoding.
