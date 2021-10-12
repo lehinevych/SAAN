@@ -7,7 +7,7 @@ Keras-Preprocessing==1.1.0
 keras-rectified-adam==0.9.0
 matplotlib==3.1.1
 numpy==1.16.4
-opencv-python==4.1.0.25
+opencv-python==4.1.1.26
 opencv-python-headless==4.1.0.25
 pandas==0.25.0
 pathlib2==2.3.4
